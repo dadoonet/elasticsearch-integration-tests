@@ -2,55 +2,21 @@
 
 This project shows how to run integration tests with elasticsearch.
 
-== Step 1
+== Step 2
 
-If you clone the repository and run
+This step assumes that you ran the previous branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/01-start-elasticsearch-manually[01-start-elasticsearch-manually].
 
-```sh
-mvn clean install
-```
-
-It will fail because elasticsearch is not running yet:
-
-```
-[INFO] <JUnit4> says olá! Master seed: 6B97AD13CF87090
-Executing 1 suite with 1 JVM.
-
-Started J0 PID(4079@MacBook-Pro-David.local).
-  1> 16:00:20,366 INFO  [f.p.t.e.t.i.ElasticsearchIT] Starting a client on http://localhost:9200
-  1> 16:00:20,931 INFO  [f.p.t.e.t.i.ElasticsearchIT] Closing elasticsearch client.
-ERROR   0.00s | ElasticsearchIT (suite) <<<
-   > Throwable #1: java.net.ConnectException: Connection refused
-
-Tests with failures [seed: 6B97AD13CF87090]:
-  - fr.pilato.talk.elasticsearch.tests.integration.ElasticsearchIT (suite)
-```
-
-So the first step is to elasticsearch locally.
-If you have Docker installed (which is expected for the next steps anyway),
-you can run from the project root:
-
-```sh
-docker-compose up
-```
-
-Then you can run:
+We now starts Docker container from Maven so you can simply run:
 
 ```sh
 mvn clean install
 ```
 
-Or run tests from your IDE.
-
-Once done, stop your containers with:
-
-```sh
-docker-compose stop
-```
+But if you run the tests from your IDE, tests will still fail.
 
 == Next step
 
-Look at branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/02-start-docker-from-maven[02-start-docker-from-maven].
+Look at branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/03-using-test-containers[03-using-test-containers].
 
 
 = License
