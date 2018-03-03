@@ -2,33 +2,36 @@
 
 This project shows how to run integration tests with elasticsearch.
 
-== Step 4
+== Step 5
 
-This step assumes that you ran the previous branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/03-using-test-containers[03-using-test-containers].
+This step assumes that you ran the previous branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/04-check-if-already-running[04-check-if-already-running].
 
-We now check if elasticsearch is already running. If not, we launch test containers. Otherwise we just use the instance
-which is running.
+We want to able to run our tests against a https://cloud.elastic.co[cloud.elastic.co] instance.
 
-So the following command does not launch anymore 2 docker instances.
+Create your account on https://cloud.elastic.co[cloud.elastic.co] if you don't have one yet.
+No credit card required for the 15 days trial!
+
+Just start a new cluster either on AWS or GCP.
+Get the `elastic` password you got at creation time and add the following properties in
+your IDE for the test:
 
 ```
-mvn clean install
+-Dtests.cluster.host=cloud_host_name
+-Dtests.cluster.port=9243
+-Dtests.cluster.scheme=https
+-Dtests.cluster.user=elastic
+-Dtests.cluster.pass=changeme
 ```
 
-Cherry on the cake, we can still run locally an elasticsearch cluster with:
+Then run the tests again. You will see that it does not start an instance and just connects
+to the cloud.
+If you created the Kibana instance as well when you created your elasticsearch cluster, you
+can open it from the https://cloud.elastic.co[cloud console] and check from the developer console
+that your data is there:
 
-```sh
-docker-compose up
 ```
-
-And when we launch the tests from the IDE we are getting immediate feedback.
-
-Still we can't use a secured instance yet (https://www.elastic.co/guide/en/x-pack/current/index.html[X-Pack security] or running on https://cloud.elastic.co[cloud.elastic.co]).
-
-== Next step
-
-Look at branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/05-cloud[05-cloud].
-
+GET scenario1/_search
+```
 
 = License
 

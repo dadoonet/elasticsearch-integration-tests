@@ -21,6 +21,10 @@ package fr.pilato.talk.elasticsearch.tests.integration;
 
 import fr.pilato.elasticsearch.containers.ElasticsearchContainer;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.ElasticsearchStatusException;
@@ -61,11 +65,14 @@ public class ElasticsearchIT {
         int testClusterPort = Integer.parseInt(System.getProperty("tests.cluster.port", "9200"));
         String testClusterHost = System.getProperty("tests.cluster.host", "localhost");
         String testClusterScheme = System.getProperty("tests.cluster.scheme", "http");
+        String testClusterUser = System.getProperty("tests.cluster.user", "elastic");
+        String testClusterPass = System.getProperty("tests.cluster.pass", "changeme");
 
         logger.info("Starting a client on {}://{}:{}", testClusterScheme, testClusterHost, testClusterPort);
 
         // We start a client
-        RestClientBuilder builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme));
+        RestClientBuilder builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme),
+                testClusterUser, testClusterPass);
 
         // We check that the client is running
         try (RestHighLevelClient elasticsearchClientTemporary = new RestHighLevelClient(builder)) {
@@ -87,7 +94,8 @@ public class ElasticsearchIT {
         }
 
         // We build the elasticsearch High Level Client based on the parameters
-        builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme));
+        builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme),
+                testClusterUser, testClusterPass);
         client = new RestHighLevelClient(builder);
 
         // We make sure the cluster is running
@@ -107,8 +115,13 @@ public class ElasticsearchIT {
         }
     }
 
-    private static RestClientBuilder getClientBuilder(HttpHost host) {
-        return RestClient.builder(host);
+    private static RestClientBuilder getClientBuilder(HttpHost host, String username, String password) {
+        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY,
+                new UsernamePasswordCredentials(username, password));
+
+        return RestClient.builder(host)
+                .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
     }
 
     @Test
