@@ -1,0 +1,4 @@
+# Demo project for Integration testing with Elasticsearch
+
+
+Content under Apache2 License
