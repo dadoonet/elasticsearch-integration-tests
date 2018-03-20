@@ -2,21 +2,30 @@
 
 This project shows how to run integration tests with elasticsearch.
 
-== Step 2
+== Step 3
 
-This step assumes that you ran the previous branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/01-start-elasticsearch-manually[01-start-elasticsearch-manually].
+This step assumes that you ran the previous branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/02-start-docker-from-maven[02-start-docker-from-maven].
 
-We now starts Docker container from Maven so you can simply run:
+We add https://github.com/dadoonet/testcontainers-java-module-elasticsearch[testcontainers-java-module-elasticsearch] to
+launch our tests from the IDE. This project helps to launch an Elasticsearch Docker image
+from Java.
 
-```sh
+Try to run tests from your IDE now.
+
+But when we run:
+
+```
 mvn clean install
 ```
 
-But if you run the tests from your IDE, tests will still fail.
+It actually starts Docker twice now:
+
+* Once with fabric8
+* Once with test-containers (from Java code)
 
 == Next step
 
-Look at branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/03-using-test-containers[03-using-test-containers].
+Look at branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/04-check-if-already-running[04-check-if-already-running].
 
 
 = License

@@ -19,6 +19,7 @@
 
 package fr.pilato.talk.elasticsearch.tests.integration;
 
+import fr.pilato.elasticsearch.containers.ElasticsearchContainer;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,8 +38,12 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.testcontainers.containers.wait.HttpWaitStrategy;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.time.Duration;
+import java.util.Properties;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.hamcrest.CoreMatchers.is;
@@ -49,6 +54,7 @@ public class ElasticsearchIT {
     private static final Logger logger = LogManager.getLogger(ElasticsearchIT.class);
     private static RestHighLevelClient client;
     private static final String INDEX = "scenario1";
+    private static ElasticsearchContainer container;
 
     @BeforeClass
     public static void startElasticsearchRestClient() throws IOException {
@@ -60,6 +66,22 @@ public class ElasticsearchIT {
 
         // We start a client
         RestClientBuilder builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme));
+
+        logger.info("No node running. We need to start a Docker instance.");
+        Properties properties = new Properties();
+        properties.load(ElasticsearchIT.class.getClassLoader().getResourceAsStream("elasticsearch.version.properties"));
+        container = new ElasticsearchContainer().withVersion(properties.getProperty("version"));
+        container.setWaitStrategy(
+                new HttpWaitStrategy()
+                        .forStatusCode(200)
+                        .withStartupTimeout(Duration.ofSeconds(90)));
+        container.start();
+        logger.info("Docker instance started.");
+        testClusterHost = container.getHost().getHostName();
+        testClusterPort = container.getFirstMappedPort();
+
+        // We build the elasticsearch High Level Client based on the parameters
+        builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme));
         client = new RestHighLevelClient(builder);
 
         // We make sure the cluster is running
@@ -72,6 +94,10 @@ public class ElasticsearchIT {
         if (client != null) {
             logger.info("Closing elasticsearch client.");
             client.close();
+        }
+        if (container != null) {
+            logger.info("Stopping Docker instance.");
+            container.close();
         }
     }
 
