@@ -67,18 +67,24 @@ public class ElasticsearchIT {
         // We start a client
         RestClientBuilder builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme));
 
-        logger.info("No node running. We need to start a Docker instance.");
-        Properties properties = new Properties();
-        properties.load(ElasticsearchIT.class.getClassLoader().getResourceAsStream("elasticsearch.version.properties"));
-        container = new ElasticsearchContainer().withVersion(properties.getProperty("version"));
-        container.setWaitStrategy(
-                new HttpWaitStrategy()
-                        .forStatusCode(200)
-                        .withStartupTimeout(Duration.ofSeconds(90)));
-        container.start();
-        logger.info("Docker instance started.");
-        testClusterHost = container.getHost().getHostName();
-        testClusterPort = container.getFirstMappedPort();
+        // We check that the client is running
+        try (RestHighLevelClient elasticsearchClientTemporary = new RestHighLevelClient(builder)) {
+            elasticsearchClientTemporary.info();
+            logger.info("A node is already running. No need to start a Docker instance.");
+        } catch (ConnectException e) {
+            logger.info("No node running. We need to start a Docker instance.");
+            Properties properties = new Properties();
+            properties.load(ElasticsearchIT.class.getClassLoader().getResourceAsStream("elasticsearch.version.properties"));
+            container = new ElasticsearchContainer().withVersion(properties.getProperty("version"));
+            container.setWaitStrategy(
+                    new HttpWaitStrategy()
+                            .forStatusCode(200)
+                            .withStartupTimeout(Duration.ofSeconds(90)));
+            container.start();
+            logger.info("Docker instance started.");
+            testClusterHost = container.getHost().getHostName();
+            testClusterPort = container.getFirstMappedPort();
+        }
 
         // We build the elasticsearch High Level Client based on the parameters
         builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme));

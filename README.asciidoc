@@ -2,30 +2,32 @@
 
 This project shows how to run integration tests with elasticsearch.
 
-== Step 3
+== Step 4
 
-This step assumes that you ran the previous branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/02-start-docker-from-maven[02-start-docker-from-maven].
+This step assumes that you ran the previous branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/03-using-test-containers[03-using-test-containers].
 
-We add https://github.com/dadoonet/testcontainers-java-module-elasticsearch[testcontainers-java-module-elasticsearch] to
-launch our tests from the IDE. This project helps to launch an Elasticsearch Docker image
-from Java.
+We now check if elasticsearch is already running. If not, we launch test containers. Otherwise we just use the instance
+which is running.
 
-Try to run tests from your IDE now.
-
-But when we run:
+So the following command does not launch anymore 2 docker instances.
 
 ```
 mvn clean install
 ```
 
-It actually starts Docker twice now:
+Cherry on the cake, we can still run locally an elasticsearch cluster with:
 
-* Once with fabric8
-* Once with test-containers (from Java code)
+```sh
+docker-compose up
+```
+
+And when we launch the tests from the IDE we are getting immediate feedback.
+
+Still we can't use a secured instance yet (https://www.elastic.co/guide/en/x-pack/current/index.html[X-Pack security] or running on https://cloud.elastic.co[cloud.elastic.co]).
 
 == Next step
 
-Look at branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/04-check-if-already-running[04-check-if-already-running].
+Look at branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/05-cloud[05-cloud].
 
 
 = License
