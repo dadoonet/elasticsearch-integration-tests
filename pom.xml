@@ -7,7 +7,7 @@
     <version>0.1-SNAPSHOT</version>
 
     <properties>
-        <elasticsearch.version>6.2.2</elasticsearch.version>
+        <elasticsearch.version>6.2.3</elasticsearch.version>
         <log4j.version>2.10.0</log4j.version>
         <jansi.version>1.16</jansi.version>
 

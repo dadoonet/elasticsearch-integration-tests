@@ -26,7 +26,7 @@ Tests with failures [seed: 6B97AD13CF87090]:
   - fr.pilato.talk.elasticsearch.tests.integration.ElasticsearchIT (suite)
 ```
 
-So the first step is to elasticsearch locally.
+So the first step is to install elasticsearch locally.
 If you have Docker installed (which is expected for the next steps anyway),
 you can run from the project root:
 
