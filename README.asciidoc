@@ -1,4 +1,74 @@
-# Demo project for Integration testing with Elasticsearch
+= Demo project for Integration testing with Elasticsearch
+
+This project shows how to run integration tests with elasticsearch.
+
+== Step 1
+
+If you clone the repository and run
+
+```sh
+mvn clean install
+```
+
+It will fail because elasticsearch is not running yet:
+
+```
+[INFO] <JUnit4> says olá! Master seed: 6B97AD13CF87090
+Executing 1 suite with 1 JVM.
+
+Started J0 PID(4079@MacBook-Pro-David.local).
+  1> 16:00:20,366 INFO  [f.p.t.e.t.i.ElasticsearchIT] Starting a client on http://localhost:9200
+  1> 16:00:20,931 INFO  [f.p.t.e.t.i.ElasticsearchIT] Closing elasticsearch client.
+ERROR   0.00s | ElasticsearchIT (suite) <<<
+   > Throwable #1: java.net.ConnectException: Connection refused
+
+Tests with failures [seed: 6B97AD13CF87090]:
+  - fr.pilato.talk.elasticsearch.tests.integration.ElasticsearchIT (suite)
+```
+
+So the first step is to elasticsearch locally.
+If you have Docker installed (which is expected for the next steps anyway),
+you can run from the project root:
+
+```sh
+docker-compose up
+```
+
+Then you can run:
+
+```sh
+mvn clean install
+```
+
+Or run tests from your IDE.
+
+Once done, stop your containers with:
+
+```sh
+docker-compose stop
+```
+
+== Next step
+
+Look at branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/02-start-docker-from-maven[02-start-docker-from-maven].
 
 
-Content under Apache2 License
+= License
+
+```
+This software is licensed under the Apache 2 license, quoted below.
+
+Copyright 2018 Elastic
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+```

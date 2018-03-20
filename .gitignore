@@ -114,3 +114,4 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+/elasticsearch-integration-tests.iml

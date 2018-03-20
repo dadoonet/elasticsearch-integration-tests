@@ -1,0 +1,33 @@
+---
+version: '3'
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-platinum:$ELASTIC_VERSION
+    environment:
+      - bootstrap.memory_lock=true
+      - ELASTIC_PASSWORD=changeme
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    networks: ['stack']
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:$ELASTIC_VERSION
+    links:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    networks: ['stack']
+    depends_on:
+      - elasticsearch
+
+networks:
+  stack: {}
