@@ -19,15 +19,15 @@ services:
       - 9200:9200
     networks: ['stack']
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:$ELASTIC_VERSION
-    links:
-      - elasticsearch
-    ports:
-      - 5601:5601
-    networks: ['stack']
-    depends_on:
-      - elasticsearch
+#  kibana:
+#    image: docker.elastic.co/kibana/kibana:$ELASTIC_VERSION
+#    links:
+#      - elasticsearch
+#    ports:
+#      - 5601:5601
+#    networks: ['stack']
+#    depends_on:
+#      - elasticsearch
 
 networks:
   stack: {}

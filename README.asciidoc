@@ -30,6 +30,12 @@ So the first step is to install elasticsearch locally.
 If you have Docker installed (which is expected for the next steps anyway),
 you can run from the project root:
 
+```
+docker run --rm -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+```
+
+Or
+
 ```sh
 docker-compose up
 ```
