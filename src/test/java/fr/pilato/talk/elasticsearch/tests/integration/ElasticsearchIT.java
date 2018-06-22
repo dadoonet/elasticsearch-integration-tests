@@ -76,10 +76,6 @@ public class ElasticsearchIT {
             Properties properties = new Properties();
             properties.load(ElasticsearchIT.class.getClassLoader().getResourceAsStream("elasticsearch.version.properties"));
             container = new ElasticsearchContainer().withVersion(properties.getProperty("version"));
-            container.setWaitStrategy(
-                    new HttpWaitStrategy()
-                            .forStatusCode(200)
-                            .withStartupTimeout(Duration.ofSeconds(90)));
             container.start();
             logger.info("Docker instance started.");
             testClusterHost = container.getHost().getHostName();
