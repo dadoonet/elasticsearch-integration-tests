@@ -71,7 +71,7 @@ public class ElasticsearchIT {
         try (RestHighLevelClient elasticsearchClientTemporary = new RestHighLevelClient(builder)) {
             elasticsearchClientTemporary.info();
             logger.info("A node is already running. No need to start a Docker instance.");
-        } catch (ConnectException e) {
+        } catch (IOException e) {
             logger.info("No node running. We need to start a Docker instance.");
             Properties properties = new Properties();
             properties.load(ElasticsearchIT.class.getClassLoader().getResourceAsStream("elasticsearch.version.properties"));
