@@ -38,11 +38,8 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.testcontainers.containers.wait.HttpWaitStrategy;
 
 import java.io.IOException;
-import java.net.ConnectException;
-import java.time.Duration;
 import java.util.Properties;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
@@ -71,10 +68,6 @@ public class ElasticsearchIT {
         Properties properties = new Properties();
         properties.load(ElasticsearchIT.class.getClassLoader().getResourceAsStream("elasticsearch.version.properties"));
         container = new ElasticsearchContainer().withVersion(properties.getProperty("version"));
-        container.setWaitStrategy(
-                new HttpWaitStrategy()
-                        .forStatusCode(200)
-                        .withStartupTimeout(Duration.ofSeconds(90)));
         container.start();
         logger.info("Docker instance started.");
         testClusterHost = container.getHost().getHostName();
