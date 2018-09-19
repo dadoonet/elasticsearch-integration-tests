@@ -35,6 +35,7 @@ import org.elasticsearch.action.main.MainResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.WriteRequest;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -70,7 +71,7 @@ public class ElasticsearchIT {
         client = new RestHighLevelClient(builder);
 
         // We make sure the cluster is running
-        MainResponse info = client.info();
+        MainResponse info = client.info(RequestOptions.DEFAULT);
         logger.info("Client is running against an elasticsearch cluster {}.", info.getVersion().toString());
     }
 
@@ -96,14 +97,14 @@ public class ElasticsearchIT {
         // We remove any existing index
         try {
             logger.info("-> Removing index {}.", INDEX);
-            client.indices().delete(new DeleteIndexRequest(INDEX));
+            client.indices().delete(new DeleteIndexRequest(INDEX), RequestOptions.DEFAULT);
         } catch (ElasticsearchStatusException e) {
             assertThat(e.status().getStatus(), is(404));
         }
 
         // We create a new index
         logger.info("-> Creating index {}.", INDEX);
-        client.indices().create(new CreateIndexRequest(INDEX));
+        client.indices().create(new CreateIndexRequest(INDEX), RequestOptions.DEFAULT);
 
         // We index some documents
         logger.info("-> Indexing one document in {}.", INDEX);
@@ -112,11 +113,11 @@ public class ElasticsearchIT {
                         .startObject()
                         .field("foo", "bar")
                         .endObject()
-        ).setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE));
+        ).setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE), RequestOptions.DEFAULT);
         logger.info("-> Document indexed with _id {}.", ir.getId());
 
         // We search
-        SearchResponse sr = client.search(new SearchRequest(INDEX));
+        SearchResponse sr = client.search(new SearchRequest(INDEX), RequestOptions.DEFAULT);
         logger.info("{}", sr);
         assertThat(sr.getHits().totalHits, is(1L));
     }
