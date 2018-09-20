@@ -134,7 +134,7 @@ public class ElasticsearchIT {
 
         // We index some documents
         logger.info("-> Indexing one document in {}.", INDEX);
-        IndexResponse ir = client.index(new IndexRequest(INDEX, "doc").source(
+        IndexResponse ir = client.index(new IndexRequest(INDEX, "_doc").source(
                 jsonBuilder()
                         .startObject()
                         .field("foo", "bar")
