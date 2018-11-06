@@ -19,7 +19,6 @@
 
 package fr.pilato.talk.elasticsearch.tests.integration;
 
-import fr.pilato.elasticsearch.containers.ElasticsearchContainer;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +38,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -68,7 +68,7 @@ public class ElasticsearchIT {
         logger.info("No node running. We need to start a Docker instance.");
         Properties properties = new Properties();
         properties.load(ElasticsearchIT.class.getClassLoader().getResourceAsStream("elasticsearch.version.properties"));
-        container = new ElasticsearchContainer().withVersion(properties.getProperty("version"));
+        container = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:" + properties.getProperty("version"));
         container.start();
         logger.info("Docker instance started.");
         testClusterHost = container.getHost().getHostName();

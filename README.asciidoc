@@ -6,7 +6,7 @@ This project shows how to run integration tests with elasticsearch.
 
 This step assumes that you ran the previous branch https://github.com/dadoonet/elasticsearch-integration-tests/tree/02-start-docker-from-maven[02-start-docker-from-maven].
 
-We add https://github.com/dadoonet/testcontainers-java-module-elasticsearch[testcontainers-java-module-elasticsearch] to
+We add https://www.testcontainers.org/usage/elasticsearch_container.html[testcontainers-java-module-elasticsearch] to
 launch our tests from the IDE. This project helps to launch an Elasticsearch Docker image
 from Java.
 
