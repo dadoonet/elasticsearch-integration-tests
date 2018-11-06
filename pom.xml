@@ -81,9 +81,9 @@
         </dependency>
 
         <dependency>
-            <groupId>fr.pilato.elasticsearch.testcontainers</groupId>
-            <artifactId>testcontainers-elasticsearch</artifactId>
-            <version>0.1</version>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>1.10.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
