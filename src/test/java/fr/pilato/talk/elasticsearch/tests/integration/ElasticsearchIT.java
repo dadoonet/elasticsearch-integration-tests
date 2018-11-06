@@ -63,7 +63,7 @@ public class ElasticsearchIT {
         logger.info("Starting a client on {}://{}:{}", testClusterScheme, testClusterHost, testClusterPort);
 
         // We start a client
-        RestClientBuilder builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme));
+        RestClientBuilder builder;
 
         logger.info("No node running. We need to start a Docker instance.");
         Properties properties = new Properties();
