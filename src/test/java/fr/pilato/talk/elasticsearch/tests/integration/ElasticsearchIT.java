@@ -83,7 +83,7 @@ public class ElasticsearchIT {
             container = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:" + properties.getProperty("version"));
             container.start();
             logger.info("Docker instance started.");
-            testClusterHost = container.getHost().getHostName();
+            testClusterHost = container.getContainerIpAddress();
             testClusterPort = container.getFirstMappedPort();
         }
 
