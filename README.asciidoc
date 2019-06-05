@@ -31,7 +31,7 @@ If you have Docker installed (which is expected for the next steps anyway),
 you can run from the project root:
 
 ```
-docker run --rm -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+docker run --rm -p 9200:9200 docker.elastic.co/elasticsearch/elasticsearch:7.1.1
 ```
 
 Or

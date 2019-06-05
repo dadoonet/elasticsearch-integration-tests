@@ -27,7 +27,6 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.ElasticsearchStatusException;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -39,6 +38,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -108,7 +108,7 @@ public class ElasticsearchIT {
 
         // We index some documents
         logger.info("-> Indexing one document in {}.", INDEX);
-        IndexResponse ir = client.index(new IndexRequest(INDEX, "_doc").source(
+        IndexResponse ir = client.index(new IndexRequest(INDEX).source(
                 jsonBuilder()
                         .startObject()
                         .field("foo", "bar")
@@ -119,6 +119,6 @@ public class ElasticsearchIT {
         // We search
         SearchResponse sr = client.search(new SearchRequest(INDEX), RequestOptions.DEFAULT);
         logger.info("{}", sr);
-        assertThat(sr.getHits().totalHits, is(1L));
+        assertThat(sr.getHits().getTotalHits().value, is(1L));
     }
 }
