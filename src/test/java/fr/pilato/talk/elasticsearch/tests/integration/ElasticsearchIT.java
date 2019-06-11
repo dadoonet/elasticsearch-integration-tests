@@ -73,6 +73,7 @@ public class ElasticsearchIT {
         logger.info("Docker instance started.");
         testClusterHost = container.getContainerIpAddress();
         testClusterPort = container.getFirstMappedPort();
+        testClusterScheme = "http";
 
         // We build the elasticsearch High Level Client based on the parameters
         builder = getClientBuilder(new HttpHost(testClusterHost, testClusterPort, testClusterScheme));
