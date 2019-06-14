@@ -44,6 +44,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.hamcrest.CoreMatchers.is;
@@ -58,7 +59,7 @@ public class ElasticsearchIT {
     @BeforeClass
     public static void startElasticsearchRestClient() throws IOException {
         int testClusterPort = Integer.parseInt(System.getProperty("tests.cluster.port", "9200"));
-        String testClusterHost = System.getProperty("tests.cluster.host", "localhost");
+        String testClusterHost = System.getProperty("tests.cluster.host", InetAddress.getLocalHost().getHostAddress());
         String testClusterScheme = System.getProperty("tests.cluster.scheme", "http");
         String testClusterUser = System.getProperty("tests.cluster.user", "elastic");
         String testClusterPass = System.getProperty("tests.cluster.pass", "changeme");
